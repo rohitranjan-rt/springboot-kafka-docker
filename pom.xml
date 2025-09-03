@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.springboot.kafka</groupId>
-	<artifactId>springboot.kafka</artifactId>
+	<artifactId>springboot.kafka-l</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>springboot-kafka</name>
+	<name>springboot-kafka-l</name>
 	<description>Project for Spring Boot and Kafka</description>
 	<url/>
 	<licenses>
@@ -46,6 +46,12 @@
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.0.33</version> <!-- Use the latest version -->
+        </dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>

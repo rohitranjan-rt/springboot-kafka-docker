@@ -16,6 +16,11 @@ public class KafkaController {
         this.kafkaProducerService = kafkaProducerService;
     }
 
+    @GetMapping("/test")
+    public String test() {
+        log.info("Test in controller");
+        return "Test successful";
+    }
     @GetMapping("/send")
     public String sendMessage(@RequestParam String message) {
         log.info("Message in controller : {}", message);
