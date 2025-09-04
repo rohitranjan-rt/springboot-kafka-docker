@@ -33,7 +33,7 @@ public class Message {
     private Long id;
 
     @Column(name = "message")
-    private String message;
+    private String msg;
 
     @LastModifiedDate
     @Column(name = "last_updated_at")

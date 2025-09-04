@@ -2,8 +2,8 @@
 #version: "3.8"
 
 services:
-  mysqldb:
-    image: mysql:oraclelinux9
+  db:
+    image: mysql:latest
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -11,7 +11,24 @@ services:
     ports:
       - "3308:3306"
     networks:
-      - springboot-kafka-mysql-net
+      - skm-net
+
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/kafkaDB?createDatabaseIfNotExist=true
+    depends_on:
+      - db
+    networks:
+      - skm-net
+    restart: on-failure
+
+
 
 #version: '3.1'
 
@@ -22,7 +39,7 @@ services:
     ports:
       - "2181:2181"
     networks:
-      - springboot-kafka-mysql-net
+      - skm-net
 
 
   kafka:
@@ -33,21 +50,24 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CFG_BROKER_ID: 1
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093 # If running a single-node KRaft cluster
+      KAFKA_CFG_PROCESS_ROLES: broker,controller # Specify the roles
+      KAFKA_CFG_NODE_ID: 1 # Required for KRaft
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER # Required for KRaft
+#      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093 # Required for KRaft
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT # Required for KRaft
+      AFKA_CFG_INTER_BROKER_LISTENER_NAME: PLAINTEXT # Required for KRaft
+      KAFKA_CLUSTER_ID: "your_cluster_id" # Generate a cluster ID for KRaft
+    volumes:
+      - kafka_data:/var/lib/kafka/data
     networks:
-      - springboot-kafka-mysql-net
+      - skm-net
 
-  springboot:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mysqldb
-    networks:
-      - springboot-kafka-mysql-net
-    restart: on-failure
-
+volumes:
+  kafka_data:
 
 networks:
-  springboot-kafka-mysql-net:
+  skm-net:

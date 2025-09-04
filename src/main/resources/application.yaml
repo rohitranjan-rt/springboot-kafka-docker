@@ -4,12 +4,12 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: root
-    url: jdbc:mysql://localhost:3308/kafkaDB?createDatabaseIfNotExist=true
+    url: jdbc:mysql://db:3306/kafkaDB?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false #jdbc:mysql://localhost:3308/kafkaDB?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
   jpa:
     hibernate:
       ddl-auto: update
-      dialect: org.hibernate.dialect.MySQLDialect
+      dialect: org.hibernate.dialect.MySQL8Dialect
     properties:
       hibernate:
         format_sql: 'true'
@@ -28,3 +28,15 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+
+
+logging:
+  level:
+    root: WARN
+    org:
+      springframework:
+        web: DEBUG
+    com:
+      springboot:
+        kafka: INFO

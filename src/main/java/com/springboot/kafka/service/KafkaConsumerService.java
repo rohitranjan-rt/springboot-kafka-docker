@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import static java.rmi.server.LogStream.log;
+
 @Slf4j
 @Service
 public class KafkaConsumerService {
@@ -16,9 +18,9 @@ public class KafkaConsumerService {
 
     @KafkaListener(topics = "my_topic", groupId = "group_id")
     public void consume(String message){
-        log.info("Message received : {}", message);
+        log("Message received : " + message);
         Message kafkaData = new Message();
-        kafkaData.setMessage(message);
+        kafkaData.setMsg(message);
 
         repository.save(kafkaData);
 
