@@ -4,7 +4,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: root
-    url: jdbc:mysql://db:3306/kafkaDB?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false #jdbc:mysql://localhost:3308/kafkaDB?createDatabaseIfNotExist=true&serverTimezone=UTC
+    url: jdbc:mysql://mysql:3306/kafkaDB?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false #jdbc:mysql://localhost:3308/kafkaDB?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
   jpa:
     hibernate:
